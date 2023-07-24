@@ -7,10 +7,10 @@ class Pocket_GNN(torch.nn.Module):
 
         self.linA=torch.nn.Linear(23, 23)
         self.linB=torch.nn.Linear(23, 23)
-        self.conv1=torch_geometric.nn.GATv2Conv(23, 24, heads=8, edge_dim=7, add_self_loops=False)
-        self.conv2=torch_geometric.nn.GATv2Conv(24*8, 24, heads=8, edge_dim=7, add_self_loops=False)
-        self.conv3=torch_geometric.nn.GATv2Conv(24*8, 24, heads=8, edge_dim=7, add_self_loops=False)
-        self.conv4=torch_geometric.nn.GATv2Conv(24*8, 8, heads=8, edge_dim=7, add_self_loops=False)
+        self.conv1=torch_geometric.nn.GATv2Conv(23, 24, heads=8, edge_dim=7, add_self_loops=False, dropout=0.25)
+        self.conv2=torch_geometric.nn.GATv2Conv(24*8, 24, heads=8, edge_dim=7, add_self_loops=False, dropout=0.25)
+        self.conv3=torch_geometric.nn.GATv2Conv(24*8, 24, heads=8, edge_dim=7, add_self_loops=False, dropout=0.25)
+        self.conv4=torch_geometric.nn.GATv2Conv(24*8, 8, heads=8, edge_dim=7, add_self_loops=False, dropout=0.25)
         self.lin1=torch.nn.Linear(8*8, 20)
         self.lin2=torch.nn.Linear(20, 1)
     def forward(self, data):
