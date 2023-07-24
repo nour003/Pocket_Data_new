@@ -18,9 +18,14 @@ def pred_train():
         # create directory 
         model = torch.load(model_file)
         model = model.to(device)
-        model.train()
+        if(dataset_name=='validation_data'):
+            model.train()
+        elif(dataset_name=='training_data'):
+            model.eval()
+        else:
+            print("dataset does not exist ")
         pred_y = model(data)
-        path = os.path.join('./output_predicted_values/train_set', model_name, graph)
+        path = os.path.join('./output_predicted_values',dataset_name, model_name, graph)
         savetxt(path, pred_y.squeeze().detach().numpy())
 
 pred_train()
