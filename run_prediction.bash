@@ -2,31 +2,28 @@ cd "$(dirname $0)"
 
 echo
 echo "delete prev directory"
-rm -rf ./output_predicted_values ./__pycache__
+rm -rf ./output_predicted_values ./__pycache__ ./validation_data ./training_data
 mkdir ./output_predicted_values
 
 echo 
-echo " prediction on training set"
-echo
-echo " crate direcories "
-mkdir ./output_predicted_values/train_set
+echo " prediction on training set and validation set"
 
-for epoch in 20 40 80 160 320
+for set_name in training_data validation_data
 do
-    mkdir ./output_predicted_values/train_set/epoch${epoch}.pth
-
-    echo
-    echo " crate direcories "
-
-    while read -r graph_name
+echo
+echo " create direcory "
+mkdir ./output_predicted_values/${set_name}
+    for epoch in 20 40 80 60 100 120 200
     do
-        graph_name="$(echo ${graph_name} | tr -d '\r' | tr -d '\r')"
-        touch "./output_predicted_values/train_set/epoch${epoch}.pth/$graph_name"
-    done < "./coarse_grained_graphs/training_data_files_prefixes"
-    
-    sorted_graphs="$(cat ./coarse_grained_graphs/training_data_files_prefixes | tr -d '\r'| sort)"
-    python ./run_prediction.py ./coarse_grained_graphs training_data "epoch${epoch}.pth" $sorted_graphs > grained_evaluation_loss
-done
+        mkdir ./output_predicted_values/${set_name}/epoch${epoch}.pth
 
-echo 
-echo " Done"
+        while read -r graph_name
+        do
+            graph_name="$(echo ${graph_name} | tr -d '\r' | tr -d '\r')"
+            touch "./output_predicted_values/${set_name}/epoch${epoch}.pth/$graph_name"
+        done < "./coarse_grained_graphs/${set_name}_files_prefixes"
+        
+        sorted_graphs="$(cat ./coarse_grained_graphs/${set_name}_files_prefixes | tr -d '\r'| sort)"
+        python ./run_prediction.py ./coarse_grained_graphs ${set_name} "epoch${epoch}.pth" $sorted_graphs > ${set_name}_loss
+    done
+done
