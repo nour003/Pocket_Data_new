@@ -12,7 +12,8 @@ def weighted_mae_loss(y_pred, y_true, weight_factor, gt_std, gt_mean):
     absolute_errors = torch.abs(y_pred - y_true)
     weights = 1 + weight_factor * (y_true*gt_std+gt_mean) 
     weighted_errors = weights * absolute_errors
-    loss = torch.mean(weighted_errors)
+    loss = torch.sum(weighted_errors) / torch.sum(weights)
+
     return loss
 
 # Compute validation loss
