@@ -13,7 +13,7 @@ do
 echo
 echo " create direcory "
 mkdir ./output_predicted_values/${set_name}
-    for epoch in 20 40 80 60 100 120 200
+    for epoch in  5 10 20 60 80 100 120 180 300
     do
         mkdir ./output_predicted_values/${set_name}/epoch${epoch}.pth
 
