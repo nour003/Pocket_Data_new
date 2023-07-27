@@ -13,7 +13,6 @@ def weighted_mae_loss(y_pred, y_true, weight_factor, gt_std, gt_mean):
     weights = 1 + weight_factor * (y_true*gt_std+gt_mean) 
     weighted_errors = weights * absolute_errors
     loss = torch.sum(weighted_errors) / torch.sum(weights)
-
     return loss
 
 # Compute validation loss
@@ -22,7 +21,7 @@ def calc_mse(data):
 	model.eval()
 	data=data.to(device)
 	pred_y=model(data)
-	loss=weighted_mae_loss(pred_y.squeeze(), data.y.squeeze(), 4, 0.14342581912400262 , 0.1849439336325112)
+	loss=weighted_mae_loss(pred_y.squeeze(), data.y.squeeze(), 8, 0.14342581912400262 , 0.1849439336325112)
 	return loss.item()
 
 for model_file in (model_files):
